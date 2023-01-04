@@ -53,3 +53,5 @@ async function addItems() {
     `     https://explorer.solana.com/tx/${response.signature}?cluster=devnet`
   )
 }
+
+addItems()
