@@ -1,0 +1,11 @@
+# Node modules
+node_modules/
+
+# Solana test validator
+test-ledger/
+
+# Secrets
+secrets/
+
+# ENV file
+.env
