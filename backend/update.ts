@@ -22,15 +22,12 @@ const WALLET = Keypair.fromSecretKey(new Uint8Array(secret))
 const METAPLEX = Metaplex.make(SOLANA_CONNECTION).use(keypairIdentity(WALLET))
 
 // Create NFT Collection
-async function updateNft() {
-  const mintAddress = new PublicKey(
-    '8QqEmTRQ143QM7hv8dGZY8R9BswQRhoDov7GFWwVtnfT'
-  )
+export async function updateNft(id: string) {
+  const mintAddress = new PublicKey(id)
   const nft = await METAPLEX.nfts().findByMint({ mintAddress })
   await METAPLEX.nfts().update({
     nftOrSft: nft,
     name: 'Minted NFT LOL',
   })
+  return 'Successful!'
 }
-
-updateNft()
