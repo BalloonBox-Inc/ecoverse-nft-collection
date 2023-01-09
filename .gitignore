@@ -7,5 +7,8 @@ test-ledger/
 # Secrets
 secrets/
 
+# Build folder
+build/
+
 # ENV file
 .env
