@@ -12,3 +12,6 @@ build/
 
 # ENV file
 .env
+
+# testing image
+/backend/me.jpg
