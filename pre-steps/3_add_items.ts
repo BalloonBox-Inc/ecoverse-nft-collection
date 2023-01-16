@@ -18,8 +18,7 @@ const SOLANA_CONNECTION = new Connection(QUICKNODE_RPC, {
 const WALLET = Keypair.fromSecretKey(new Uint8Array(secret))
 
 // NFT ID, Candy machine ID and NFT metadata
-const NFT_METADATA =
-  'https://mfp2m2qzszjbowdjl2vofmto5aq6rtlfilkcqdtx2nskls2gnnsa.arweave.net/YV-mahmWUhdYaV6q4rJu6CHozWVC1CgOd9NkpctGa2Q'
+const NFT_METADATA = process.env.NFT_METADATA ?? ''
 const CANDY_MACHINE_ID = process.env.CANDY_MACHINE_ID ?? ''
 
 const METAPLEX = Metaplex.make(SOLANA_CONNECTION).use(keypairIdentity(WALLET))
@@ -39,7 +38,7 @@ async function addItems() {
   for (let i = 0; i < 3; i++) {
     // Add 3 NFTs (the size of our collection)
     items.push({
-      name: `QuickNode Demo NFT # ${i + 1}`,
+      name: `Ecoverse Demo NFT # ${i + 1}`,
       uri: NFT_METADATA,
     })
   }

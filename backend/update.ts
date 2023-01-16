@@ -22,12 +22,13 @@ const WALLET = Keypair.fromSecretKey(new Uint8Array(secret))
 const METAPLEX = Metaplex.make(SOLANA_CONNECTION).use(keypairIdentity(WALLET))
 
 // Create NFT Collection
-export async function updateNft(id: string) {
+export async function updateNft(id: string, cid: string) {
   const mintAddress = new PublicKey(id)
   const nft = await METAPLEX.nfts().findByMint({ mintAddress })
+  const PINATA_URL = `${process.env.PINATA_URL_PREFIX ?? ''}${cid}`
   await METAPLEX.nfts().update({
     nftOrSft: nft,
-    name: 'Minted NFT LOL',
+    uri: PINATA_URL,
   })
   return 'Successful!'
 }

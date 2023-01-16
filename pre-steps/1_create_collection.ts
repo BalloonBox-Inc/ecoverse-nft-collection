@@ -18,14 +18,13 @@ const SOLANA_CONNECTION = new Connection(QUICKNODE_RPC, {
 const WALLET = Keypair.fromSecretKey(new Uint8Array(secret))
 
 // NFT ID, Candy machine ID and NFT metadata
-const NFT_METADATA =
-  'https://mfp2m2qzszjbowdjl2vofmto5aq6rtlfilkcqdtx2nskls2gnnsa.arweave.net/YV-mahmWUhdYaV6q4rJu6CHozWVC1CgOd9NkpctGa2Q'
+const NFT_METADATA = process.env.NFT_METADATA ?? ''
 const METAPLEX = Metaplex.make(SOLANA_CONNECTION).use(keypairIdentity(WALLET))
 
 // Create NFT Collection
 async function createCollectionNft() {
   const { nft: collectionNft } = await METAPLEX.nfts().create({
-    name: 'QuickNode Demo NFT Collection',
+    name: 'Ecoverse Demo NFT Collection',
     uri: NFT_METADATA,
     sellerFeeBasisPoints: 0,
     isCollection: true,
