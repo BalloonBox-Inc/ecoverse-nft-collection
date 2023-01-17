@@ -9,8 +9,8 @@ import {
   SuccessResponse,
 } from 'tsoa'
 import { NftRequest, NftResponse } from './mint.interface'
-import { updateNft } from '../../backend/update'
-import { createUser } from '../../backend/matadata_upload'
+import { updateNft } from './helper/updateNft'
+import { createMetadata } from './helper/createMetadata'
 
 @Route('/nft')
 export class NftController extends Controller {
@@ -25,7 +25,7 @@ export class NftController extends Controller {
   @Post()
   public async updateNft(@Body() requestBody: NftRequest): Promise<void> {
     const IMG_CID = process.env.IMG_CID ?? ''
-    const ipfs_cid = await createUser(
+    const ipfs_cid = await createMetadata(
       IMG_CID,
       requestBody.start_date,
       requestBody.end_date,

@@ -3,6 +3,7 @@
  */
 import * as dotenv from 'dotenv'
 import express, { urlencoded, Request, Response } from 'express'
+import { IpFilter, IpList } from 'express-ipfilter'
 import cors from 'cors'
 import helmet from 'helmet'
 import morgan from 'morgan'
@@ -18,6 +19,7 @@ dotenv.config()
  */
 
 export const app = express()
+const ALLOW_IP = [process.env.ALLOW_IP ?? '::1']
 
 /**
  *  App Configuration
@@ -31,6 +33,7 @@ app.use(
 app.use(helmet())
 app.use(cors())
 app.use(morgan('tiny'))
+app.use(IpFilter(ALLOW_IP, { mode: 'allow' }))
 app.use('/docs', swaggerUi.serve, async (_req: Request, res: Response) => {
   const newLocal = '../build/swagger.json'
   res.send(swaggerUi.generateHTML(await import(newLocal)))
