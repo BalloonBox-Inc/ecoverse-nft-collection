@@ -1,6 +1,12 @@
 import dotenv from 'dotenv'
 import { Connection, Keypair, PublicKey } from '@solana/web3.js'
-import { Metaplex, keypairIdentity } from '@metaplex-foundation/js'
+import {
+  Metaplex,
+  keypairIdentity,
+  UpdateNftOutput,
+  mintCandyMachineV2Builder,
+} from '@metaplex-foundation/js'
+import { NftUpdateResponse } from '../mint.interface'
 import secret from '../../../secrets/my-keypair.json'
 
 // initialize configuration
@@ -20,15 +26,27 @@ const WALLET = Keypair.fromSecretKey(new Uint8Array(secret))
 // NFT ID, Candy machine ID and NFT metadata
 
 const METAPLEX = Metaplex.make(SOLANA_CONNECTION).use(keypairIdentity(WALLET))
-
 // Create NFT Collection
-export async function updateNft(id: string, cid: string) {
-  const mintAddress = new PublicKey(id)
-  const nft = await METAPLEX.nfts().findByMint({ mintAddress })
-  const PINATA_URL = `${process.env.PINATA_URL_PREFIX ?? ''}${cid}`
-  await METAPLEX.nfts().update({
-    nftOrSft: nft,
-    uri: PINATA_URL,
-  })
-  return 'Successful!'
+export async function updateNft(
+  id: string,
+  cid: string
+): Promise<NftUpdateResponse> {
+  try {
+    const mintAddress = new PublicKey(id)
+    const nft = await METAPLEX.nfts().findByMint({ mintAddress })
+    const PINATA_URL = `${process.env.PINATA_URL_PREFIX ?? ''}${cid}`
+    const updateResponse: UpdateNftOutput = await METAPLEX.nfts().update({
+      nftOrSft: nft,
+      uri: PINATA_URL,
+    })
+    return { message: updateResponse.response.signature, code: 200 }
+  } catch (error) {
+    if (typeof error === 'string') {
+      const errorMessage: string = error.toUpperCase() // works, `e` narrowed to string
+      return { message: errorMessage, code: 400 }
+    } else if (error instanceof Error) {
+      return { message: error.message, code: 400 }
+    }
+  }
+  return { message: 'Unknown Error!', code: 400 }
 }

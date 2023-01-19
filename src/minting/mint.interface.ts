@@ -1,18 +1,23 @@
-import internal from 'stream'
-
 export interface NftRequest {
   id: string
-  img_cid: string
-  farmid: number
+  nft_name: string
+  nft_area: number
+  tile_count: number
+  cabon_url: string
   start_date: Date
   end_date: Date
-  tile_count: number
-  status: string
-  area: number
-  url: string
-  geojson: string
+  farmid: number
+  genus_name: string
+  species_name: string
+  plant_status: string
 }
 
-export interface NftResponse {
+export interface NftUpdateApiResponse {
+  details: string
+  signature: string | null
+}
+
+export interface NftUpdateResponse {
   message: string
+  code: number
 }

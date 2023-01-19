@@ -5,39 +5,37 @@ import {
   Path,
   Post,
   Query,
+  Response,
   Route,
   SuccessResponse,
 } from 'tsoa'
-import { NftRequest, NftResponse } from './mint.interface'
+import { NftRequest, NftUpdateApiResponse } from './mint.interface'
 import { updateNft } from './helper/updateNft'
 import { createMetadata } from './helper/createMetadata'
 
 @Route('/nft')
 export class NftController extends Controller {
-  @Get('/')
-  public async getUser(): Promise<NftResponse> {
-    return {
-      message: 'Hello World!!!!',
-    }
-  }
-
-  @SuccessResponse('201', 'Updated') // Custom success response
-  @Post()
-  public async updateNft(@Body() requestBody: NftRequest): Promise<void> {
-    const IMG_CID = process.env.IMG_CID ?? ''
-    const ipfs_cid = await createMetadata(
-      IMG_CID,
-      requestBody.start_date,
-      requestBody.end_date,
-      requestBody.tile_count,
-      requestBody.status,
-      requestBody.area,
-      requestBody.url,
-      requestBody.geojson
-    )
+  /**
+   * Update NFT with the NFT ID
+   */
+  @Response('400', 'Failed')
+  @SuccessResponse('200', 'Updated') // Custom success response
+  @Post('/update')
+  public async updateNft(
+    @Body() requestBody: NftRequest
+  ): Promise<NftUpdateApiResponse> {
+    // Upload the NFT info to Pinata IPFS node
+    const ipfs_cid = await createMetadata(requestBody)
+    // Update the NFT with new IPFS hash and name
     const result = await updateNft(requestBody.id, ipfs_cid.IpfsHash)
-    this.setStatus(201) // set return status 201
+
+    if (result.code == 200) {
+      this.setStatus(200) // set return status 200
+      return { details: 'Update Successful!', signature: result.message }
+    } else {
+      this.setStatus(400)
+      return { details: result.message, signature: null }
+    }
     // new UsersService().create(requestBody);
-    return
   }
 }
