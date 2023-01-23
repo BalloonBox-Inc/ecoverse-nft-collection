@@ -11,7 +11,8 @@
     "prebuild": "npm run swagger",
     "build": "tsoa spec-and-routes && tsc",
     "dev": "concurrently \"nodemon\" \"nodemon -x tsoa spec-and-routes\"",
-    "swagger": "tsoa spec"
+    "swagger": "tsoa spec",
+    "heroku": "node build/src/server.js"
   },
   "nodemonConfig": {
     "watch": [
