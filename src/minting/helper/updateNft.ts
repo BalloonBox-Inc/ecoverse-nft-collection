@@ -21,7 +21,8 @@ const SOLANA_CONNECTION = new Connection(QUICKNODE_RPC, {
 })
 
 // Read the Serect Key from local
-const WALLET = Keypair.fromSecretKey(new Uint8Array(secret))
+const ADMIN_KEY = JSON.parse(process.env.ADMIN_KEY ?? '')
+const WALLET = Keypair.fromSecretKey(new Uint8Array(ADMIN_KEY))
 
 // NFT ID, Candy machine ID and NFT metadata
 
@@ -29,6 +30,7 @@ const METAPLEX = Metaplex.make(SOLANA_CONNECTION).use(keypairIdentity(WALLET))
 // Create NFT Collection
 export async function updateNft(
   id: string,
+  name: string,
   cid: string
 ): Promise<NftUpdateResponse> {
   try {
@@ -37,6 +39,7 @@ export async function updateNft(
     const PINATA_URL = `${process.env.PINATA_URL_PREFIX ?? ''}${cid}`
     const updateResponse: UpdateNftOutput = await METAPLEX.nfts().update({
       nftOrSft: nft,
+      name: name,
       uri: PINATA_URL,
     })
     return { message: updateResponse.response.signature, code: 200 }

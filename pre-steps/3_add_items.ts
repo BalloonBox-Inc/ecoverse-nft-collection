@@ -15,7 +15,8 @@ const SOLANA_CONNECTION = new Connection(QUICKNODE_RPC, {
 })
 
 // Read the Serect Key from local
-const WALLET = Keypair.fromSecretKey(new Uint8Array(secret))
+const ADMIN_KEY = JSON.parse(process.env.ADMIN_KEY ?? '')
+const WALLET = Keypair.fromSecretKey(new Uint8Array(ADMIN_KEY))
 
 // NFT ID, Candy machine ID and NFT metadata
 const NFT_METADATA = process.env.NFT_METADATA ?? ''

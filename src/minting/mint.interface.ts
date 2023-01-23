@@ -10,6 +10,7 @@ export interface NftRequest {
   genus_name: string
   species_name: string
   plant_status: string
+  geojson: string
 }
 
 export interface NftUpdateApiResponse {

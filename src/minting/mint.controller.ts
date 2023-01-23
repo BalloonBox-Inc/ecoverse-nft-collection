@@ -27,7 +27,11 @@ export class NftController extends Controller {
     // Upload the NFT info to Pinata IPFS node
     const ipfs_cid = await createMetadata(requestBody)
     // Update the NFT with new IPFS hash and name
-    const result = await updateNft(requestBody.id, ipfs_cid.IpfsHash)
+    const result = await updateNft(
+      requestBody.id,
+      requestBody.nft_name,
+      ipfs_cid.IpfsHash
+    )
 
     if (result.code == 200) {
       this.setStatus(200) // set return status 200

@@ -55,6 +55,10 @@ export async function createMetadata(request: NftRequest) {
           trait_type: 'cabon_url',
           value: request.cabon_url,
         },
+        {
+          trait_type: 'geojson',
+          value: request.geojson,
+        },
       ],
       category: 'image',
     }
