@@ -1,7 +1,6 @@
 import dotenv from 'dotenv'
 import { Connection, Keypair, PublicKey } from '@solana/web3.js'
 import { Metaplex, keypairIdentity } from '@metaplex-foundation/js'
-import secret from '../secrets/my-keypair.json'
 
 // initialize configuration
 dotenv.config()

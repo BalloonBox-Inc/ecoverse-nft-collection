@@ -9,7 +9,6 @@ import {
   toDateTime,
   sol,
 } from '@metaplex-foundation/js'
-import secret from '../secrets/my-keypair.json'
 
 // initialize configuration
 dotenv.config()

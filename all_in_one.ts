@@ -14,8 +14,6 @@ import {
   TransactionBuilder,
   CreateCandyMachineBuilderContext,
 } from '@metaplex-foundation/js'
-import secret from './secrets/my-keypair.json'
-import mint_secret from './secrets/minter.json'
 
 // initialize configuration
 dotenv.config()

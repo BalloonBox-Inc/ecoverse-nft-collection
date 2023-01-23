@@ -7,7 +7,6 @@ import {
   mintCandyMachineV2Builder,
 } from '@metaplex-foundation/js'
 import { NftUpdateResponse } from '../mint.interface'
-import secret from '../../../secrets/my-keypair.json'
 
 // initialize configuration
 dotenv.config()
