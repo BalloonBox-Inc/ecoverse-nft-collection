@@ -33,7 +33,7 @@ app.use(
 app.use(helmet())
 app.use(cors())
 app.use(morgan('tiny'))
-app.use(IpFilter(ALLOW_IP, { mode: 'allow' }))
+// app.use(IpFilter(ALLOW_IP, { mode: 'allow' }))
 app.use('/docs', swaggerUi.serve, async (_req: Request, res: Response) => {
   const SWAGGER_LOCATION = process.env.SWAGGER_LOCATION ?? '../swagger.json'
   res.send(swaggerUi.generateHTML(await import(SWAGGER_LOCATION)))
