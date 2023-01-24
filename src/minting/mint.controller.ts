@@ -28,8 +28,8 @@ export class NftController extends Controller {
     const ipfs_cid = await createMetadata(requestBody)
     // Update the NFT with new IPFS hash and name
     const result = await updateNft(
-      requestBody.id,
-      requestBody.nft_name,
+      requestBody.nftId,
+      requestBody.nftName,
       ipfs_cid.IpfsHash
     )
 

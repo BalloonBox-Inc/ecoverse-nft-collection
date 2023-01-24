@@ -14,50 +14,46 @@ export async function createMetadata(request: NftRequest) {
   try {
     const IMG_CID = process.env.IMG_CID ?? ''
     const metadata = {
-      name: request.nft_name,
+      name: request.nftName,
       description: 'Land tiles on ecoverse',
       image: `${PINATA_URL_PREFIX}${IMG_CID}`,
       external_url: 'https://ecoverse.farm',
       attributes: [
         {
-          trait_type: 'farmid',
-          value: request.farmid,
+          trait_type: 'farmId',
+          value: request.farmId,
         },
         {
-          trait_type: 'nft_area',
-          value: request.nft_area,
+          trait_type: 'nftArea',
+          value: request.nftArea,
         },
         {
-          trait_type: 'genus_name',
-          value: request.genus_name,
+          trait_type: 'scientificName',
+          value: request.scientificName,
         },
         {
-          trait_type: 'species_name',
-          value: request.species_name,
+          trait_type: 'mintStartDate',
+          value: request.mintStartDate,
         },
         {
-          trait_type: 'start_date',
-          value: request.start_date,
+          trait_type: 'mintEndDate',
+          value: request.mintEndDate,
         },
         {
-          trait_type: 'end_date',
-          value: request.end_date,
+          trait_type: 'tileCount',
+          value: request.tileCount,
         },
         {
-          trait_type: 'tile_count',
-          value: request.tile_count,
+          trait_type: 'plantStatus',
+          value: request.plantStatus,
         },
         {
-          trait_type: 'plant_status',
-          value: request.plant_status,
+          trait_type: 'carbonUrl',
+          value: request.carbonUrl,
         },
         {
-          trait_type: 'cabon_url',
-          value: request.cabon_url,
-        },
-        {
-          trait_type: 'geojson',
-          value: request.geojson,
+          trait_type: 'geolocation',
+          value: request.geolocation,
         },
       ],
       category: 'image',
