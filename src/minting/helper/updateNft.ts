@@ -7,6 +7,7 @@ import {
   mintCandyMachineV2Builder,
 } from '@metaplex-foundation/js'
 import { NftUpdateResponse } from '../mint.interface'
+import { updateBackend } from './updateBackend'
 
 // initialize configuration
 dotenv.config()
@@ -41,6 +42,7 @@ export async function updateNft(
       name: name,
       uri: PINATA_URL,
     })
+    const updateBackendResponse = updateBackend(id)
     return { message: updateResponse.response.signature, code: 200 }
   } catch (error) {
     if (typeof error === 'string') {

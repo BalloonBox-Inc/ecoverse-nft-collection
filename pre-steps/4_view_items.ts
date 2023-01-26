@@ -30,28 +30,13 @@ interface Item {
 }
 
 // Add Items to Candy Machine
-async function addItems() {
+async function viewItems() {
   const candyMachine = await METAPLEX.candyMachines().findByAddress({
     address: new PublicKey(CANDY_MACHINE_ID),
   })
-  const items: Item[] = []
-  // add 50 items each time
-  for (let i = 50; i < 51; i++) {
-    // Add 3 NFTs (the size of our collection)
-    items.push({
-      name: `${i + 1}`,
-      uri: '',
-    })
+  for (var i = 0; i < 100; i++) {
+    console.log(candyMachine.items[i].name)
   }
-  const { response } = await METAPLEX.candyMachines().insertItems({
-    candyMachine,
-    items: items,
-  })
-
-  console.log(`✅ - Items added to Candy Machine: ${CANDY_MACHINE_ID}`)
-  console.log(
-    `     https://explorer.solana.com/tx/${response.signature}?cluster=devnet`
-  )
 }
 
-addItems()
+viewItems()
