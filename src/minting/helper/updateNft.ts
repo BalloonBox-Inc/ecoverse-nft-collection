@@ -42,7 +42,7 @@ export async function updateNft(
       name: name,
       uri: PINATA_URL,
     })
-    const updateBackendResponse = updateBackend(id)
+    // const updateBackendResponse = updateBackend(id)
     return { message: updateResponse.response.signature, code: 200 }
   } catch (error) {
     if (typeof error === 'string') {
