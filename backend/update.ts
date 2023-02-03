@@ -1,7 +1,6 @@
 import dotenv from 'dotenv'
 import { Connection, Keypair, PublicKey } from '@solana/web3.js'
 import { Metaplex, keypairIdentity } from '@metaplex-foundation/js'
-import secret from '../secrets/my-keypair.json'
 
 // initialize configuration
 dotenv.config()
@@ -15,22 +14,21 @@ const SOLANA_CONNECTION = new Connection(QUICKNODE_RPC, {
 })
 
 // Read the Serect Key from local
-const WALLET = Keypair.fromSecretKey(new Uint8Array(secret))
+const ADMIN_KEY = JSON.parse(process.env.ADMIN_KEY ?? '')
+const WALLET = Keypair.fromSecretKey(new Uint8Array(ADMIN_KEY))
 
 // NFT ID, Candy machine ID and NFT metadata
 
 const METAPLEX = Metaplex.make(SOLANA_CONNECTION).use(keypairIdentity(WALLET))
 
 // Create NFT Collection
-async function updateNft() {
-  const mintAddress = new PublicKey(
-    '8QqEmTRQ143QM7hv8dGZY8R9BswQRhoDov7GFWwVtnfT'
-  )
+export async function updateNft(id: string, cid: string) {
+  const mintAddress = new PublicKey(id)
   const nft = await METAPLEX.nfts().findByMint({ mintAddress })
+  const PINATA_URL = `${process.env.PINATA_URL_PREFIX ?? ''}${cid}`
   await METAPLEX.nfts().update({
     nftOrSft: nft,
-    name: 'Minted NFT LOL',
+    uri: PINATA_URL,
   })
+  return 'Successful!'
 }
-
-updateNft()

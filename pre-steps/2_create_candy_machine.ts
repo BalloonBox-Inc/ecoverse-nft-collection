@@ -9,7 +9,6 @@ import {
   toDateTime,
   sol,
 } from '@metaplex-foundation/js'
-import secret from '../secrets/my-keypair.json'
 
 // initialize configuration
 dotenv.config()
@@ -23,20 +22,21 @@ const SOLANA_CONNECTION = new Connection(QUICKNODE_RPC, {
 })
 
 // Read the Serect Key from local
-const WALLET = Keypair.fromSecretKey(new Uint8Array(secret))
+const ADMIN_KEY = JSON.parse(process.env.ADMIN_KEY ?? '')
+const WALLET = Keypair.fromSecretKey(new Uint8Array(ADMIN_KEY))
 
 // NFT ID, Candy machine ID and NFT metadata
 const COLLECTION_NFT_MINT = process.env.COLLECTION_NFT_MINT ?? ''
-
 const METAPLEX = Metaplex.make(SOLANA_CONNECTION).use(keypairIdentity(WALLET))
 
 // Create Candy Machine
 async function generateCandyMachine() {
+  const NFT_METADATA = process.env.NFT_METADATA ?? ''
   const candyMachineSettings: CreateCandyMachineInput<DefaultCandyGuardSettings> =
     {
-      itemsAvailable: toBigNumber(3), // Collection Size: 3
+      itemsAvailable: toBigNumber(100), // Collection Size: 3
       sellerFeeBasisPoints: 1000, // 10% Royalties on Collection
-      symbol: 'DEMO',
+      symbol: 'ECOV',
       maxEditionSupply: toBigNumber(0), // 0 reproductions of each NFT allowed
       isMutable: true,
       creators: [{ address: WALLET.publicKey, share: 100 }],
@@ -46,10 +46,6 @@ async function generateCandyMachine() {
       },
       guards: {
         startDate: { date: toDateTime('2022-10-17T16:00:00Z') },
-        mintLimit: {
-          id: 1,
-          limit: 2,
-        },
         solPayment: {
           amount: sol(0.1),
           destination: METAPLEX.identity().publicKey,
@@ -57,6 +53,14 @@ async function generateCandyMachine() {
         thirdPartySigner: {
           signerKey: WALLET.publicKey,
         },
+      },
+      itemSettings: {
+        type: 'configLines',
+        prefixName: 'ECOVERSE DEMO NFT #',
+        nameLength: 3,
+        prefixUri: NFT_METADATA,
+        uriLength: 0,
+        isSequential: true,
       },
     }
   const { candyMachine } = await METAPLEX.candyMachines().create(

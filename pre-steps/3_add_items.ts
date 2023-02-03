@@ -1,7 +1,6 @@
 import dotenv from 'dotenv'
 import { Connection, Keypair, PublicKey } from '@solana/web3.js'
 import { Metaplex, keypairIdentity } from '@metaplex-foundation/js'
-import secret from '../secrets/my-keypair.json'
 
 // initialize configuration
 dotenv.config()
@@ -15,11 +14,11 @@ const SOLANA_CONNECTION = new Connection(QUICKNODE_RPC, {
 })
 
 // Read the Serect Key from local
-const WALLET = Keypair.fromSecretKey(new Uint8Array(secret))
+const ADMIN_KEY = JSON.parse(process.env.ADMIN_KEY ?? '')
+const WALLET = Keypair.fromSecretKey(new Uint8Array(ADMIN_KEY))
 
 // NFT ID, Candy machine ID and NFT metadata
-const NFT_METADATA =
-  'https://mfp2m2qzszjbowdjl2vofmto5aq6rtlfilkcqdtx2nskls2gnnsa.arweave.net/YV-mahmWUhdYaV6q4rJu6CHozWVC1CgOd9NkpctGa2Q'
+const NFT_METADATA = process.env.NFT_METADATA ?? ''
 const CANDY_MACHINE_ID = process.env.CANDY_MACHINE_ID ?? ''
 
 const METAPLEX = Metaplex.make(SOLANA_CONNECTION).use(keypairIdentity(WALLET))
@@ -36,11 +35,12 @@ async function addItems() {
     address: new PublicKey(CANDY_MACHINE_ID),
   })
   const items: Item[] = []
-  for (let i = 0; i < 3; i++) {
+  // add 50 items each time
+  for (let i = 50; i < 51; i++) {
     // Add 3 NFTs (the size of our collection)
     items.push({
-      name: `QuickNode Demo NFT # ${i + 1}`,
-      uri: NFT_METADATA,
+      name: `${i + 1}`,
+      uri: '',
     })
   }
   const { response } = await METAPLEX.candyMachines().insertItems({
@@ -53,3 +53,5 @@ async function addItems() {
     `     https://explorer.solana.com/tx/${response.signature}?cluster=devnet`
   )
 }
+
+addItems()

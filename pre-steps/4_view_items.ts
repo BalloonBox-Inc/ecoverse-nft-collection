@@ -16,37 +16,27 @@ const SOLANA_CONNECTION = new Connection(QUICKNODE_RPC, {
 // Read the Serect Key from local
 const ADMIN_KEY = JSON.parse(process.env.ADMIN_KEY ?? '')
 const WALLET = Keypair.fromSecretKey(new Uint8Array(ADMIN_KEY))
-const MINTER_KEY = JSON.parse(process.env.MINTER_KEY ?? '')
-const WALLET_MINT = Keypair.fromSecretKey(new Uint8Array(MINTER_KEY))
 
 // NFT ID, Candy machine ID and NFT metadata
+const NFT_METADATA = process.env.NFT_METADATA ?? ''
 const CANDY_MACHINE_ID = process.env.CANDY_MACHINE_ID ?? ''
 
-const METAPLEX_MINT = Metaplex.make(SOLANA_CONNECTION).use(
-  keypairIdentity(WALLET_MINT)
-)
+const METAPLEX = Metaplex.make(SOLANA_CONNECTION).use(keypairIdentity(WALLET))
 
-// Mint NFTs
-export async function mintNft() {
-  const candyMachine = await METAPLEX_MINT.candyMachines().findByAddress({
-    address: new PublicKey(CANDY_MACHINE_ID),
-  })
-  let { nft, response } = await METAPLEX_MINT.candyMachines().mint(
-    {
-      candyMachine,
-      collectionUpdateAuthority: WALLET.publicKey,
-      guards: { thirdPartySigner: { signer: WALLET } },
-    },
-    { commitment: 'finalized' }
-  )
-
-  console.log(`✅ - Minted NFT: ${nft.address.toString()}`)
-  console.log(
-    `     https://explorer.solana.com/address/${nft.address.toString()}?cluster=devnet`
-  )
-  console.log(
-    `     https://explorer.solana.com/tx/${response.signature}?cluster=devnet`
-  )
+// interface for Item
+interface Item {
+  name: string
+  uri: string
 }
 
-mintNft()
+// Add Items to Candy Machine
+async function viewItems() {
+  const candyMachine = await METAPLEX.candyMachines().findByAddress({
+    address: new PublicKey(CANDY_MACHINE_ID),
+  })
+  for (var i = 0; i < 100; i++) {
+    console.log(candyMachine.items[i].name)
+  }
+}
+
+viewItems()
