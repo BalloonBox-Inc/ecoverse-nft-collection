@@ -8,11 +8,11 @@ Welcome to the Ecoverse NFT Collection! This repo contain two parts.
 
 ## Ecoverse NFT Collection
 
-An Ecoverse NFT is a unique digital asset that represents ownership of a piece of land tiles in Ecoverse. The NFT contains information about the forest. The forest information can use to calculate the carbon dioxide (CO2) sequestered by different plantations (farms) around the world.
+An Ecoverse NFT is a unique digital asset that represents ownership of a piece of land tiles in Ecoverse. The NFT contains information about the forest. The forest information can be used to calculate the carbon dioxide (CO2) sequestered by different plantations (farms) around the world.
 
 ## NFT API
 
-This API allows you to update NFT with NFT ID. Because we need to store the forest information in an NFT, we can use the API to update the NFT.
+This API allows you to update the NFT with the NFT ID. Because we need to store the forest information in an NFT, we can use the API to update the NFT.
 
 This API work together with Ecoverse APIs\
 https://github.com/BalloonBox-Inc/ecoverse-apis
